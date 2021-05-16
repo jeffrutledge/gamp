@@ -1,7 +1,7 @@
-- !recipe
-  name: Spanish Rice and Beans
-  ingredients:
-    pimento stuffed green olives: 1 cup
-    olive oil: 2 tbs
-  steps:
-    - half olives
+!recipe
+name: Spanish Rice and Beans
+ingredients:
+  pimento stuffed green olives: 1 cup
+  olive oil: 2 tbs
+steps:
+  - half olives
