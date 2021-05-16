@@ -1,6 +1,7 @@
 import typing
 
 import pint
+import pandas as pd
 
 
 class Recipe():
@@ -28,3 +29,9 @@ class Recipe():
 
     def ingredients(self):
         return list(self.ingredient_qtys.keys())
+
+    def ingredient_series(self, ureg: pint.UnitRegistry):
+        s = pd.Series({ingredient: ureg(qty)
+                       for ingredient, qty in self.ingredient_qtys.items()})
+        s.index.name = 'ingredient'
+        return s

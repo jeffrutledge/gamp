@@ -72,6 +72,11 @@ class GAMPConfig():
     def recipe_holders(self) -> typing.Iterable[RecipeHolder]:
         return self.recipe_dict.values()
 
+    def is_valid_recipe(self, recipe_name: str) -> bool:
+        return recipe_name in self.recipe_dict
+
+    def get_recipe(self, recipe_name: str) -> core.Recipe:
+        return self.recipe_dict[recipe_name].recipe
 
 
 # TODO: load from cfg file
