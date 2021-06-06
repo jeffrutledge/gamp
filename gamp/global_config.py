@@ -42,7 +42,7 @@ def load_recipe_from_yaml(recipe_path: Path) -> core.Recipe:
     recipe = yaml.full_load(recipe_path.open('r'))
     if not isinstance(recipe, core.Recipe):
         raise ValueError('{recipe_path} does not contain a Recipe!')
-    recipe.name = recipe_path.name
+    recipe.name = recipe_path.stem
     return recipe
 
 
@@ -82,11 +82,11 @@ class GAMPConfig():
     def recipes(self) -> typing.Iterable[core.Recipe]:
         return (rh.recipe for rh in self.recipe_dict.values())
 
+    def recipe_names(self) -> typing.Sequence[str]:
+        return list(r.name for r in self.recipes())
+
     def recipe_holders(self) -> typing.Iterable[RecipeHolder]:
         return self.recipe_dict.values()
-
-    def is_valid_recipe(self, recipe_name: str) -> bool:
-        return recipe_name in self.recipe_dict
 
     def get_recipe(self, recipe_name: str) -> core.Recipe:
         return self.recipe_dict[recipe_name].recipe

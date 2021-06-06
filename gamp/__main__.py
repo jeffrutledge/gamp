@@ -3,12 +3,13 @@ import typing
 import tempfile
 import subprocess
 import shutil
+import sys
 
 import click
 import yaml
 import pandas as pd
-import numpy as np
 import pint
+from iterfzf import iterfzf
 
 from . import click_utils
 from . import global_config
@@ -61,7 +62,7 @@ def edit_recipe(recipe_path: Path):
 
 
 def edit_meal_plan(meal_plan_path: Path):
-    edit_with_tags(meal_plan_path, [r.name for r in GAMP_CONFIG.recipes()])
+    edit_with_tags(meal_plan_path, GAMP_CONFIG.recipe_names())
 
 
 def validate_recipe(recipe: core.Recipe) -> bool:
@@ -92,21 +93,29 @@ class OrderedDumper(yaml.Dumper):
 
 
 @gamp.command()
-@click.argument('recipe-name', type=click.STRING)
+@click.argument('recipe-name', type=click.STRING, required=False)
 def recipe_edit(recipe_name):
+    # TODO Version control recipe edits
+    if recipe_name is None:
+        recipe_name = iterfzf(GAMP_CONFIG.recipe_names())
+        if recipe_name is None:
+            print('no selection made, exiting')
+            sys.exit(0)
+
     recipe_path = GAMP_CONFIG.recipe_dir / f'{recipe_name}.yaml'
     if not recipe_path.exists():
         shutil.copy(templates.RECIPE_TEMPLATE, recipe_path)
+
     edit_recipe(recipe_path)
     recipe = global_config.load_recipe_from_yaml(recipe_path)
     while not validate_recipe(recipe):
         response = input('Recipe failed validation.'
-                         'Would you like to fix it now? [y|n] ')
+                         ' Would you like to fix it now? [y|n] ')
         if response.strip().lower() in ['n', 'no']:
             break
+
         edit_recipe(recipe_path)
         recipe = global_config.load_recipe_from_yaml(recipe_path)
-
     print(f'wrote recipe: {recipe_path}')
 
 
@@ -149,7 +158,7 @@ def inventory(meal_plan_path, worksheet_path):
     meal_plan = yaml.full_load(meal_plan_path.open('r'))
     ingredient_df = []
     for tag, recipe_name in meal_plan.items():
-        if not GAMP_CONFIG.is_valid_recipe(recipe_name):
+        if not recipe_name in GAMP_CONFIG.recipe_names():
             print(f'{recipe_name} is not a valid recipe, skipping...')
             continue
 
