@@ -38,6 +38,7 @@ Add `alias gamp=/path/to/gamp/bin/gamp`
    remember for next time you cook this.
 
 ## Future Features
+[] default unit for ingredient
 [] create as pip installable package
 [] validate meal plans like recipes
 [] remove need to define file paths while Meal Planning

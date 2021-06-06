@@ -4,6 +4,16 @@ import pint
 import pandas as pd
 
 
+def parse_qty_with_default_unit(qty_str: str,
+                                ureg: pint.UnitRegistry,
+                                default_unit: str = 'ton') -> pint.Quantity:
+    qty = ureg(qty_str)
+    if not isinstance(qty, ureg.Quantity):
+        qty = ureg(qty_str + ' ' + default_unit)
+
+    return qty
+
+
 class Recipe():
     def __init__(self,
                  *,
@@ -31,7 +41,7 @@ class Recipe():
         return list(self.ingredient_qtys.keys())
 
     def ingredient_series(self, ureg: pint.UnitRegistry):
-        s = pd.Series({ingredient: ureg(qty)
+        s = pd.Series({ingredient: parse_qty_with_default_unit(str(qty), ureg)
                        for ingredient, qty in self.ingredient_qtys.items()})
         s.index.name = 'ingredient'
         return s

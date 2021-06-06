@@ -73,7 +73,7 @@ def validate_recipe(recipe: core.Recipe) -> bool:
             print(f'\tinvalid ingredient: {ingredient}')
             # TODO offer to correct
         try:
-            GAMP_CONFIG.ureg(qty_str)
+            GAMP_CONFIG.ureg(str(qty_str))
         except pint.errors.UndefinedUnitError:
             is_valid = False
             print(f'\tinvalid qty: {qty_str}')
@@ -174,7 +174,7 @@ def inventory(meal_plan_path, worksheet_path):
 
 
 def parse_inventory_row(row):
-    row.need = GAMP_CONFIG.ureg(row.need)
+    row.need = GAMP_CONFIG.ureg(str(row.need))
 
     # TODO handle bad units
     row.have = GAMP_CONFIG.ureg(str(row.have))

@@ -89,10 +89,15 @@ class GAMPConfig():
         if not ingredients_path.exists():
             shutil.copy(templates.INGREDIENTS_TEMPLATE, ingredients_path)
         self.ingredients = load_ingredients_from_yaml(ingredients_path)
+
         self.recipe_dir = Path(recipe_dir)
+        if not self.recipe_dir.exists():
+            self.recipe_dir.mkdir(parents=True)
         self.recipe_dict = load_recipes_from_dir(self.recipe_dir)
 
         self.meal_plan_dir = meal_plan_dir
+        if not self.meal_plan_dir.exists():
+            self.meal_plan_dir.mkdir(parents=True)
 
     def recipes(self) -> typing.Iterable[core.Recipe]:
         return (rh.recipe for rh in self.recipe_dict.values())
@@ -107,5 +112,4 @@ class GAMPConfig():
         return self.recipe_dict[recipe_name].recipe
 
 
-# TODO: load from cfg file
 GAMP_CONFIG = GAMPConfig()
