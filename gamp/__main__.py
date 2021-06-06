@@ -199,12 +199,12 @@ def grocery_list(worksheet_path, list_path):
     yaml.dump(to_buy, list_path.open('w'))
 
 
-@gamp.command()
-def cook():
-    # fzf search recipes
-    # show meal plan and select
-    # know from start date to now
-    pass
+# @gamp.command()
+# def cook():
+#     # fzf search recipes
+#     # show meal plan and select
+#     # know from start date to now
+#     pass
 
 
 if __name__ == '__main__':

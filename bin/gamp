@@ -1,0 +1,7 @@
+#!/usr/bin/zsh
+
+set -e
+
+gamp_root=${0:a:h:h}
+source $gamp_root/venv/bin/activate
+PYTHONPATH="$gamp_root:$PYTHONPATH" python3 -m gamp $@

@@ -1,5 +1,6 @@
 !recipe
-ingredients:
+rating: 0..3 # OPTIONAL: 0: not again, 1: okay, 2: good, 3: great
+ingredients: # Must be defined in `$GAMP_CONFIG_DIR/ingredients.yaml`
   white onion: 1 cup
 steps:
-  - 
+  - chop onion
