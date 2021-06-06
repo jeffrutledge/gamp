@@ -1,16 +1,85 @@
 from pathlib import Path
 import typing
+import tempfile
+import subprocess
+import shutil
 
 import click
 import yaml
 import pandas as pd
 import numpy as np
+import pint
 
 from . import click_utils
-from gamp.global_config import GAMP_CONFIG
+from . import global_config
+from .global_config import GAMP_CONFIG
+from . import core
+from . import templates
 
 
 # utils
+
+def write_tag_file(
+        tags: typing.Sequence[str],
+        out_path: typing.Optional[Path] = None) -> Path:
+    """ Write a tag file consiting of tags. Allows completion with YCM.
+
+    out_path: optional
+
+        If not provided use a named temporary file.
+
+    Returns: Path to tag file.
+    """
+    tag_lines = '\n'.join(['\t'.join([tag, 'tag', 'language:yaml'])
+                           for tag in tags])
+    tag_lines += '\n'
+    if out_path is None:
+        out_file = tempfile.NamedTemporaryFile(mode='w')
+        out_path = Path(out_file.name)
+        out_file.write(tag_lines)
+        out_file.flush()
+    else:
+        with out_path.open('w') as out_file:
+            out_file.write(tag_lines)
+
+    return out_path
+
+
+def edit_with_tags(recipe_path: Path,
+                   tags: typing.Optional[typing.Sequence[str]] = None):
+    tag_file = tempfile.NamedTemporaryFile(mode='w')
+    tag_path = Path(tag_file.name)
+    write_tag_file(tags, tag_path)
+    subprocess.run(['vim',
+                    '-c', 'let g:ycm_collect_identifiers_from_tags_files = 1'
+                    f' | set tags={tag_path}',
+                    recipe_path], check=True)
+
+
+def edit_recipe(recipe_path: Path):
+    edit_with_tags(recipe_path, GAMP_CONFIG.ingredients)
+
+
+def edit_meal_plan(meal_plan_path: Path):
+    edit_with_tags(meal_plan_path, [r.name for r in GAMP_CONFIG.recipes()])
+
+
+def validate_recipe(recipe: core.Recipe) -> bool:
+    is_valid = True
+    for ingredient, qty_str in recipe.ingredient_qtys.items():
+        if ingredient not in GAMP_CONFIG.ingredients:
+            is_valid = False
+            print(f'\tinvalid ingredient: {ingredient}')
+            # TODO offer to correct
+        try:
+            GAMP_CONFIG.ureg(qty_str)
+        except pint.errors.UndefinedUnitError:
+            is_valid = False
+            print(f'\tinvalid qty: {qty_str}')
+            # TODO offer to correct
+    return is_valid
+
+
 # CLI
 @click.command(cls=click_utils.AliasedGroup)
 def gamp():
@@ -23,20 +92,51 @@ class OrderedDumper(yaml.Dumper):
 
 
 @gamp.command()
+@click.argument('recipe-name', type=click.STRING)
+def recipe_edit(recipe_name):
+    recipe_path = GAMP_CONFIG.recipe_dir / f'{recipe_name}.yaml'
+    if not recipe_path.exists():
+        shutil.copy(templates.RECIPE_TEMPLATE, recipe_path)
+    edit_recipe(recipe_path)
+    recipe = global_config.load_recipe_from_yaml(recipe_path)
+    while not validate_recipe(recipe):
+        response = input('Recipe failed validation.'
+                         'Would you like to fix it now? [y|n] ')
+        if response.strip().lower() in ['n', 'no']:
+            break
+        edit_recipe(recipe_path)
+        recipe = global_config.load_recipe_from_yaml(recipe_path)
+
+    print(f'wrote recipe: {recipe_path}')
+
+
+@gamp.command()
 def validate_recipes():
     for recipe_holder in GAMP_CONFIG.recipe_holders():
-        is_valid = True
+        recipe = recipe_holder.recipe
         print(f'{recipe_holder}')
-        # TODO check/fix rating
-        # TODO check/fix unit
-        for ingredient in recipe_holder.recipe.ingredients():
-            if ingredient not in GAMP_CONFIG.ingredients:
-                is_valid = False
-                print(f'\tinvalid ingredient: {ingredient}')
-                # TODO offer to correct
-
-        if is_valid:
+        if validate_recipe(recipe):
             print(f'Is Valid')
+
+
+@gamp.command()
+@click.argument('meal_plan_path', type=click.Path(dir_okay=False))
+def meal_plan_edit(meal_plan_path):
+    meal_plan_path = Path(meal_plan_path)
+    if not meal_plan_path.exists():
+        shutil.copy(templates.MEAL_PLAN_TEMPLATE, meal_plan_path)
+    edit_meal_plan(meal_plan_path)
+    # TODO meal plan validation
+    # recipe = global_config.load_recipe_from_yaml(recipe_path)
+    # while not validate_recipe(recipe):
+    #     response = input('Recipe failed validation.'
+    #                      'Would you like to fix it now? [y|n] ')
+    #     if response.strip().lower() in ['n', 'no']:
+    #         break
+    #     edit_recipe(recipe_path)
+    #     recipe = global_config.load_recipe_from_yaml(recipe_path)
+
+    print(f'wrote meal_plan_path: {meal_plan_path}')
 
 
 @gamp.command()

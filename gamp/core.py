@@ -7,7 +7,7 @@ import pandas as pd
 class Recipe():
     def __init__(self,
                  *,
-                 name: str,
+                 name: typing.Optional[str] = None,
                  rating: [int] = 3,
                  ingredients: typing.Mapping[str, str],
                  steps: [str]):
