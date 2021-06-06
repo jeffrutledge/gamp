@@ -3,7 +3,7 @@ _Groceries and Meal Planning_
 
 ## Installation
 
-Add `bin/gamp` to your `$PATH`.
+Add `alias gamp=/path/to/gamp/bin/gamp`
 
 ## Usage Tips
 
