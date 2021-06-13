@@ -165,7 +165,7 @@ def inventory(meal_plan_path, worksheet_path):
         recipe = GAMP_CONFIG.get_recipe(recipe_name)
         ingredient_df.append(recipe.ingredient_series(GAMP_CONFIG.ureg))
 
-    ingredient_df = pd.concat(ingredient_df, axis=1)
+    ingredient_df = pd.concat(ingredient_df, axis=1).fillna(0)
     ingredient_qtys = ingredient_df.sum(axis=1).to_frame(name='need')
     ingredient_qtys = ingredient_qtys.reset_index()
     ingredient_qtys.insert(0, 'have', 0)
