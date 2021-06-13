@@ -158,7 +158,7 @@ def inventory(meal_plan_path, worksheet_path):
     meal_plan = yaml.full_load(meal_plan_path.open('r'))
     ingredient_df = []
     for tag, recipe_name in meal_plan.items():
-        if not recipe_name in GAMP_CONFIG.recipe_names():
+        if recipe_name not in GAMP_CONFIG.recipe_names():
             print(f'{recipe_name} is not a valid recipe, skipping...')
             continue
 
