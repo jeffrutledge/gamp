@@ -38,17 +38,17 @@ Add `alias gamp=/path/to/gamp/bin/gamp`
    remember for next time you cook this.
 
 ## Future Features
-[] default unit for ingredient
-[] create as pip installable package
-[] validate meal plans like recipes
-[] remove need to define file paths while Meal Planning
-  [] add interactive inventory worksheet instead of csv
-[] suggest corrections upon invalidate recipe or meal plan
-[] view meal plan
-  [] what you are supposed to cook today, make mealplan key relative date?
-[] Don't require ingredients to be defined in ingredients.yaml
-[] Preferred units for each ingredient in grocery list
-[] log cooked recipes
-  [] recipe suggestions based on ranking and last cooked time
-[] inventory tacking
+- [] default unit for ingredient
+- [] create as pip installable package
+- [] validate meal plans like recipes
+- [] remove need to define file paths while Meal Planning
+  - [] add interactive inventory worksheet instead of csv
+- [] suggest corrections upon invalidate recipe or meal plan
+- [] view meal plan
+  - [] what you are supposed to cook today, make mealplan key relative date?
+- [] Don't require ingredients to be defined in ingredients.yaml
+- [] Preferred units for each ingredient in grocery list
+- [] log cooked recipes
+  - [] recipe suggestions based on ranking and last cooked time
+- [] inventory tacking
   - probably only useful as an approximation for some items
