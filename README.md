@@ -18,17 +18,17 @@ Add `alias gamp=/path/to/gamp/bin/gamp`
 
 1. Define ingredients in `$GAMP_CONFIG_DIR/ingredients.yaml`.
 1. Collect recipes with `gamp recipe-edit [recipe_name]`
-  - This opens `vim` with a tag file set to ingredients for easy completion.
+    - This opens `vim` with a tag file set to ingredients for easy completion.
 
 ### Meal Planning
 1. Define a meal plan with `gamp meal-plan-edit [meal_plan_path]`
-  - The keys in this file are not used by `gamp`, but may be later.
-  - Create as many or as few rows as you like.
-  - This opens `vim` with a tag file set to recipe names for easy completion.
+    - The keys in this file are not used by `gamp`, but may be later.
+    - Create as many or as few rows as you like.
+    - This opens `vim` with a tag file set to recipe names for easy completion.
 1. Create inventory worksheet with `gamp inventory [meal_plan_path] [worksheet_path]`.
 1. Fill in the inventory worksheet
-  1. Fill in the `have` column with the amount in your inventory
-  1. You can also delete rows if you don't need that item.
+    1. Fill in the `have` column with the amount in your inventory
+    1. Or you can also delete rows if you don't need that item.
 1. Create a grocery list with `gamp grocery-list [worksheet_path] [list_path]`
 1. Buy groceries
 
