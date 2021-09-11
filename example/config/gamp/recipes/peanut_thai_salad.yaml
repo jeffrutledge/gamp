@@ -1,7 +1,6 @@
 !recipe
 ingredients:
-  tofu: 1 lbs
-  soy sauce: 7 tbs
+  tofu: 1.5 lbs
   red cabbage: 0.5
   carrot: 2
   cucumber: 1.5
@@ -12,10 +11,15 @@ ingredients:
   peanut: 0.5 cup
   garlic: 2
   ginger: 2 tbs
-  rice vinegar: 0.5 cup
-  peanut butter: 0.5 cup
+  soy sauce: 4 tbs
+  rice vinegar: 8 tbs
+  peanut butter: 160g
   sesame oil: 2 tsp
   chili garlic sauce: 2 tsp
-  lime juice: 1 tbs
+  lime juice: 2 tsp
 steps:
   - https://itdoesnttastelikechicken.com/peanut-thai-salad-with-grilled-tofu/
+  - heat tofu pan on medium
+  - pan fry tofu for about 7 min on each side
+  - slice vegtables
+  - mix dressing, remember 4 tsb water
