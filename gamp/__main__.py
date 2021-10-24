@@ -130,7 +130,7 @@ def validate_recipes():
 
 @gamp.command()
 @click.argument('meal_plan_path', type=click.Path(dir_okay=False))
-def meal_plan_edit(meal_plan_path):
+def plan(meal_plan_path):
     meal_plan_path = Path(meal_plan_path)
     if not meal_plan_path.exists():
         shutil.copy(templates.MEAL_PLAN_TEMPLATE, meal_plan_path)
@@ -187,7 +187,7 @@ def parse_inventory_row(row):
 @gamp.command()
 @click.argument('worksheet_path', type=click.Path(exists=True, dir_okay=False))
 @click.argument('list_path', type=click.Path(dir_okay=False))
-def grocery_list(worksheet_path, list_path):
+def list(worksheet_path, list_path):
     list_path = Path(list_path)
     inventory = pd.read_csv(worksheet_path, index_col='ingredient')
     inventory = inventory.apply(parse_inventory_row, axis=1)
