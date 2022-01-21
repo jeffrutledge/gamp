@@ -1,0 +1,19 @@
+!recipe
+ingredients: # Must be defined in `$GAMP_CONFIG_DIR/ingredients.yaml`
+  udon: 0.5 lbs
+  red bell pepper: 1
+  green onion: 3
+  edamame: 12 oz
+  shittake mushroom: 6 oz
+  garlic: 2
+  soy sauce: 0.5 cup
+  sesame oil: 2 tsp
+  rice vinegar: 2 tsp
+  ginger: 1 tbs
+  pepper: 1 tsp
+  chili oil: 2 tsp
+steps:
+  - cook noodle
+  - chop mushroom, red bell pepper, green onion
+  - mix sauce
+  - rinse noodle
