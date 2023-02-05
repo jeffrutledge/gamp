@@ -6,14 +6,16 @@ ingredients: # Must be defined in `$GAMP_CONFIG_DIR/ingredients.yaml`
   edamame: 12 oz
   shittake mushroom: 6 oz
   garlic: 2
-  soy sauce: 0.5 cup
+  soy sauce: 0.25 cup
   sesame oil: 2 tsp
-  rice vinegar: 2 tsp
+  rice vinegar: 1 tsp
   ginger: 1 tbs
   pepper: 1 tsp
-  chili oil: 2 tsp
+  chili oil: 1 tsp
 steps:
   - cook noodle
+  - cook edamame
   - chop mushroom, red bell pepper, green onion
+  - saute mushroom for about 10 min on high heat with 1.5 tsp oil, 0.5 tsp salt, pinch of peper
   - mix sauce
   - rinse noodle
